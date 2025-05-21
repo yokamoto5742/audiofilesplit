@@ -69,14 +69,10 @@ def split_audio_if_large(file_path, target_chunk_size_mb=24.5, output_format="m4
 
 
 if __name__ == "__main__":
-    # This part is for command-line execution and testing
-    # Replace 'your_audio_file.m4a' with the actual path to your audio file
-    # when running directly.
-    input_file = r"your_audio_file.m4a"  # Example placeholder
-    target_size_mb = 24.5  # Example target size in MB
-    output_file_format = "m4a"  # Example output format
+    input_file = r"your_audio_file.m4a"
+    target_size_mb = 24.5
+    output_file_format = "m4a"
 
-    # Check if the placeholder file path is still being used
     if input_file == r"your_audio_file.m4a":
         print("INFO: To run this script directly, please replace the 'input_file' variable")
         print("      in the __main__ block with the path to your audio file.")
@@ -85,7 +81,6 @@ if __name__ == "__main__":
         print(f"ERROR: The specified input file does not exist: {input_file}")
     else:
         print(f"Starting audio splitting process for: {input_file}")
-        # When run directly, it uses the default 'print' as progress_callback
         split_audio_if_large(
             input_file,
             target_chunk_size_mb=target_size_mb,
