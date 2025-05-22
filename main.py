@@ -73,7 +73,6 @@ if __name__ == "__main__":
     input_file = r"your_audio_file.m4a"
     target_size_mb = 24.5
 
-    # 出力ファイルのフォーマットを明示的に指定(オプション)
     output_file_format = "m4a"
 
     if input_file == "your_audio_file.m4a" or not os.path.exists(input_file):
