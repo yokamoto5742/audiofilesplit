@@ -70,8 +70,8 @@ def split_audio_if_large(file_path, target_chunk_size_mb=24.5, output_format="m4
 
 if __name__ == "__main__":
 
-    input_file = r"your_audio_file.m4a"
-    target_size_mb = 24.5
+    input_file = r"C:\Users\yokam\Downloads\2024年度第2回多職種役割分担推進会議241128.m4a"
+    target_size_mb = 20
 
     output_file_format = "m4a"
 

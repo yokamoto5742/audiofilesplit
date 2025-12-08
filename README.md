@@ -15,8 +15,8 @@
 
 ## 前提条件
 
-  - Python 3.x
-  - ffmpeg: このアプリケーションは音声処理に `ffmpeg` を使用します。`ffmpeg` がインストールされており、システムのPATH（環境変数）に追加されていることを確認してください。ダウンロードはこちらから可能です： [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
+  - Python 3.12以上
+  - ffmpeg: このアプリケーションは音声処理に `ffmpeg` を使用します。`ffmpeg` がインストールされており、システムのPATH（環境変数）に追加されていることを確認してください。ダウンロードはこちらから可能です： [https://github.com/BtbN/FFmpeg-Builds/releases](https://github.com/BtbN/FFmpeg-Builds/releases)
   - `requirements.txt` に記載されているPythonライブラリ。
 
 ## 実行方法
