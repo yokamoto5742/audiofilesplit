@@ -1,40 +1,44 @@
-# Audio File Splitter
+ご提示いただいたドキュメントの日本語翻訳です。
 
-This tool allows you to split large audio files into smaller chunks based on a target file size. It provides a graphical user interface (GUI) for easy operation.
+-----
 
-## Features
+# 音声ファイル分割ツール（Audio File Splitter）
 
--   Select an audio file through a file dialog.
--   Specify a target chunk size in megabytes (MB).
--   Choose an output format (m4a, mp3, mp4).
--   View progress and error messages during the splitting process.
+このツールは、指定したファイルサイズに基づいて、大きな音声ファイルを小さな断片（チャンク）に分割するためのものです。グラフィカルユーザーインターフェース（GUI）を備えており、簡単に操作できます。
 
-## Prerequisites
+## 機能
 
--   Python 3.x
--   ffmpeg: This application relies on `ffmpeg` for audio processing. Ensure `ffmpeg` is installed and accessible in your system's PATH. You can download it from [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html).
--   The Python libraries listed in `requirements.txt`.
+  - ファイルダイアログから音声ファイルを選択可能。
+  - 目標とする分割サイズをメガバイト（MB）単位で指定可能。
+  - 出力形式の選択が可能（m4a, mp3, mp4）。
+  - 分割処理中の進捗状況やエラーメッセージを表示。
 
-## How to Run
+## 前提条件
 
-1.  **Clone the repository or download the files.**
-2.  **Install dependencies:**
-    Open a terminal or command prompt in the project directory and run:
+  - Python 3.x
+  - ffmpeg: このアプリケーションは音声処理に `ffmpeg` を使用します。`ffmpeg` がインストールされており、システムのPATH（環境変数）に追加されていることを確認してください。ダウンロードはこちらから可能です： [https://ffmpeg.org/download.html](https://ffmpeg.org/download.html)
+  - `requirements.txt` に記載されているPythonライブラリ。
+
+## 実行方法
+
+1.  **リポジトリをクローンするか、ファイルをダウンロードしてください。**
+2.  **依存関係（ライブラリ）のインストール:**
+    プロジェクトディレクトリでターミナルまたはコマンドプロンプトを開き、以下のコマンドを実行してください。
     ```bash
     pip install -r requirements.txt
     ```
-3.  **Run the GUI application:**
+3.  **GUIアプリケーションの起動:**
     ```bash
     python gui.py
     ```
-4.  **Using the Application:**
-    *   Click "Select Audio File" to choose your audio file.
-    *   Enter the desired "Target chunk size (MB)".
-    *   Select the "Output format".
-    *   Click "Split Audio".
-    *   The split files will be saved in the same directory as the original file, with "_partX" appended to their names.
+4.  **アプリケーションの使用:**
+      * 「Select Audio File」をクリックして、対象の音声ファイルを選択します。
+      * 「Target chunk size (MB)」に希望する分割サイズを入力します。
+      * 「Output format」で出力形式を選択します。
+      * 「Split Audio」をクリックします。
+      * 分割されたファイルは元のファイルと同じディレクトリに保存され、ファイル名の末尾に「\_partX」が付与されます。
 
-## Notes
+## 注意事項
 
--   The application uses the `pydub` library for audio manipulation, which in turn requires `ffmpeg`.
--   Supported input formats depend on your `ffmpeg` installation. Common formats like WAV, MP3, M4A, FLAC should work.
+  - このアプリケーションは音声操作に `pydub` ライブラリを使用しており、その動作には `ffmpeg` が必要となります。
+  - サポートされる入力形式は、インストールされている `ffmpeg` に依存します。一般的に、WAV、MP3、M4A、FLACなどの形式であれば動作するはずです。
