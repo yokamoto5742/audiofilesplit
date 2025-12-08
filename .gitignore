@@ -1,0 +1,14 @@
+build/
+dist/
+logs/
+.idea/
+.serena/
+
+*.spec
+*.iml
+*.env
+*.log
+
+.coverage
+misc.xml
+error_log.txt
