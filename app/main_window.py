@@ -22,18 +22,9 @@ class AudiofilesplitMainWindow:
         self.root.resizable(False, False)
 
         button_font = ("Yu Gothic UI", font_size)
-        button_width = 20
+        button_width = 15
         button_padx = 10
         button_pady = 10
-
-        btn_open_config = tk.Button(
-            self.root,
-            text="設定ファイル",
-            font=button_font,
-            width=button_width,
-            command=self.open_config_handler
-        )
-        btn_open_config.pack(pady=button_pady, padx=button_padx)
 
         btn_split_audio = tk.Button(
             self.root,
@@ -43,6 +34,15 @@ class AudiofilesplitMainWindow:
             command=self.split_audio_handler
         )
         btn_split_audio.pack(pady=button_pady, padx=button_padx)
+
+        btn_open_config = tk.Button(
+            self.root,
+            text="設定ファイル",
+            font=button_font,
+            width=button_width,
+            command=self.open_config_handler
+        )
+        btn_open_config.pack(pady=button_pady, padx=button_padx)
 
         btn_close = tk.Button(
             self.root,
@@ -95,6 +95,8 @@ class AudiofilesplitMainWindow:
         config = load_config()
         downloads_path = config.get('Paths', 'downloads_path')
         output_path = config.get('Paths', 'output_path')
+        target_size_mb = config.getint('Audio', 'target_size_mb')
+        output_file_format = config.get('Audio', 'output_file_format')
 
         # ファイル選択
         filetypes = [
@@ -120,8 +122,8 @@ class AudiofilesplitMainWindow:
         split_audio_file(
             file_path=file_path,
             output_dir=output_path,
-            target_chunk_size_mb=24.5,
-            output_format="m4a"
+            target_chunk_size_mb=target_size_mb,
+            output_format=output_file_format
         )
 
         # 完了メッセージ
