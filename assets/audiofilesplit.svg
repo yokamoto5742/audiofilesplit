@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="icoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -6,7 +7,11 @@
     </linearGradient>
   </defs>
   
-  <!-- 分割 file -->
   <rect x="24" y="20" width="80" height="88" rx="8" fill="url(#icoGrad)"/>
-  <text x="64" y="75" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#FFFFFF" text-anchor="middle">分割</text>
+  
+  <text x="64" y="75" 
+        font-family="'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif" 
+        font-size="32" font-weight="bold" fill="#FFFFFF" text-anchor="middle">
+    &#x5206;&#x5272;
+  </text>
 </svg>
