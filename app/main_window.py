@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 from app import __version__
+from service.audio_splitter import split_audio_file
 from utils.config_manager import CONFIG_PATH, load_config
 
 
@@ -33,6 +34,15 @@ class AudiofilesplitMainWindow:
             command=self.open_config_handler
         )
         btn_open_config.pack(pady=button_pady, padx=button_padx)
+
+        btn_split_audio = tk.Button(
+            self.root,
+            text="音声ファイル分割",
+            font=button_font,
+            width=button_width,
+            command=self.split_audio_handler
+        )
+        btn_split_audio.pack(pady=button_pady, padx=button_padx)
 
         btn_close = tk.Button(
             self.root,
@@ -75,3 +85,47 @@ class AudiofilesplitMainWindow:
     def open_config_handler(self):
         """設定ファイルをメモ帳で開く"""
         self._handle_errors(self._process_open_config)
+
+    def split_audio_handler(self):
+        """音声ファイル分割ボタンのハンドラ"""
+        self._handle_errors(self._process_split_audio)
+
+    def _process_split_audio(self):
+        """音声ファイル分割処理"""
+        config = load_config()
+        downloads_path = config.get('Paths', 'downloads_path')
+        output_path = config.get('Paths', 'output_path')
+
+        # ファイル選択
+        filetypes = [
+            ("すべての音声ファイル", "*.mp3 *.m4a *.wav *.flac *.aac *.ogg *.wma *.mp4"),
+            ("MP3ファイル", "*.mp3"),
+            ("M4Aファイル", "*.m4a"),
+            ("WAVファイル", "*.wav"),
+            ("すべてのファイル", "*.*")
+        ]
+        file_path = self._select_file("音声ファイルを選択", filetypes, downloads_path)
+
+        if not file_path:
+            return  # キャンセルされた
+
+        # 出力ディレクトリ確認・作成
+        if not os.path.exists(output_path):
+            os.makedirs(output_path, exist_ok=True)
+
+        # 処理開始メッセージ
+        messagebox.showinfo("開始", "音声ファイルの分割を開始します")
+
+        # 分割処理実行
+        split_audio_file(
+            file_path=file_path,
+            output_dir=output_path,
+            target_chunk_size_mb=24.5,
+            output_format="m4a"
+        )
+
+        # 完了メッセージ
+        messagebox.showinfo("完了", "音声ファイルの分割が完了しました")
+
+        # 出力フォルダを開く
+        self._open_output_directory(output_path)

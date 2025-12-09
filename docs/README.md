@@ -13,9 +13,38 @@
 
   - Python 3.12以上
   - `requirements.txt` に記載されているPythonライブラリ。`requirements.txt` に記載されているPythonライブラリ。
-  - ffmpeg: このアプリケーションは音声処理に `ffmpeg` を使用します。`ffmpeg` がインストールされており、システムのPATH（環境変数）に追加されていることを確認してください。ダウンロードはこちらから可能です： [https://github.com/BtbN/FFmpeg-Builds/releases](https://github.com/BtbN/FFmpeg-Builds/releases)
+  - ffmpeg: このアプリケーションは音声処理に `ffmpeg` を使用します。`ffmpeg` がインストールされており、システムのPATH（環境変数）に追加されていることを確認してください。
 
 ## ffmpegnの設定方法
+
+#### 手順1: FFmpegをダウンロードする
+
+1.  [gyan.dev (FFmpeg builds)](https://www.gyan.dev/ffmpeg/builds/) にアクセスします。
+2.  "release builds" のセクションにある `ffmpeg-release-essentials.zip` をダウンロードします。
+
+#### 手順2: 解凍して配置する
+
+1.  ダウンロードしたZIPファイルを解凍します。
+2.  解凍したフォルダ（中に `bin` フォルダがあるもの）を、分かりやすい場所に移動します。
+      * 例: `C:\Program Files\ffmpeg\bin` に配置する（中身が `C:\Program Files\ffmpeg\bin\ffmpeg.exe` となるようにする）。
+
+#### 手順3: 環境変数（PATH）を通す
+
+1.  Windowsの検索バーで「システム環境変数の編集」を検索します。
+2.  画面下部の「環境変数」ボタンをクリックします。
+3.  「**システム環境変数**」の一覧から `Path` を探して選択し、「編集」をクリックします。
+4.  「新規」をクリックし、先ほどの `bin` フォルダのパスを入力します。
+      * 例: `C:\Program Files\ffmpeg\bin`
+5.  「OK」を全て押して画面を閉じます。
+
+#### 手順4: 再起動と確認
+
+1.  **重要**: 設定を反映させるため、現在開いている **PyCharm や ターミナル（コマンドプロンプト）を一度完全に終了し、再起動**してください。
+2.  再起動後にターミナルで以下のコマンドを入力し、バージョン情報が表示されれば成功です。
+    ```bash
+    ffmpeg -version
+    ```
+    （エラーにならなければOKN）
 
 ## 実行方法
 

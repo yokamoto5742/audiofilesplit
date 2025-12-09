@@ -6,7 +6,7 @@ import sys
 def get_config_path() -> str:
     if getattr(sys, 'frozen', False):
         # PyInstallerでビルドされた実行ファイルの場合
-        base_path: str = getattr(sys, '_MEIPASS', '')  # type: ignore[attr-defined]
+        base_path: str = getattr(sys, '_MEIPASS', '')
     else:
         # 通常のPythonスクリプトとして実行される場合
         base_path = os.path.dirname(__file__)
