@@ -4,25 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2451d4d6-9067-400d-a943-a41d97edd5c3" name="変更" comment="✨ feat(readme): Pythonのバージョン要件を更新&#10;✨ feat(main): サンプル入力ファイルを更新&#10;✨ feat(requirements): audioop-ltsを追加">
-      <change afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/main_window.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/audiofilesplit.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/audiofilesplit.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/LICENSE" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/project_structure.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/project_structure.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scripts/version_manager.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/config.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/config_manager.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
+    <list default="true" id="2451d4d6-9067-400d-a943-a41d97edd5c3" name="変更" comment="✨ feat(config, project): 設定ファイルとプロジェクト構造を追加">
+      <change afterPath="$PROJECT_DIR$/pyrightconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/audiofilesplit.svg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/audiofilesplit.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +104,7 @@
       <workItem from="1765189460446" duration="151000" />
       <workItem from="1765189628948" duration="644000" />
       <workItem from="1765190282534" duration="139000" />
-      <workItem from="1765253375925" duration="476000" />
+      <workItem from="1765253375925" duration="1277000" />
     </task>
     <task id="LOCAL-00001" summary="1st commit">
       <option name="closed" value="true" />
@@ -161,7 +146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765190320233</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="✨ feat(config, project): 設定ファイルとプロジェクト構造を追加">
+      <option name="closed" value="true" />
+      <created>1765253861021</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1765253861021</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -184,7 +177,9 @@
     <MESSAGE value="✨" />
     <MESSAGE value="✨ feat(readme): Pythonのバージョン要件を更新&#10;✨ feat(main" />
     <MESSAGE value="✨ feat(readme): Pythonのバージョン要件を更新&#10;✨ feat(main): サンプル入力ファイルを更新&#10;✨ feat(requirements): audioop-ltsを追加" />
-    <option name="LAST_COMMIT_MESSAGE" value="✨ feat(readme): Pythonのバージョン要件を更新&#10;✨ feat(main): サンプル入力ファイルを更新&#10;✨ feat(requirements): audioop-ltsを追加" />
+    <MESSAGE value="✨ feat" />
+    <MESSAGE value="✨ feat(config, project): 設定ファイルとプロジェクト構造を追加" />
+    <option name="LAST_COMMIT_MESSAGE" value="✨ feat(config, project): 設定ファイルとプロジェクト構造を追加" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/audiofilesplit$main.coverage" NAME="main のカバレッジ結果" MODIFIED="1765189644758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

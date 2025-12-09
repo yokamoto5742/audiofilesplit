@@ -11,7 +11,7 @@
 
 ## 前提条件
 
-  - Python 3.13以上
+  - Python 3.12以上
   - `requirements.txt` に記載されているPythonライブラリ。`requirements.txt` に記載されているPythonライブラリ。
   - ffmpeg: このアプリケーションは音声処理に `ffmpeg` を使用します。`ffmpeg` がインストールされており、システムのPATH（環境変数）に追加されていることを確認してください。ダウンロードはこちらから可能です： [https://github.com/BtbN/FFmpeg-Builds/releases](https://github.com/BtbN/FFmpeg-Builds/releases)
 
