@@ -4,11 +4,9 @@ logs/
 .idea/
 .serena/
 
+.env
+.coverage
 *.spec
 *.iml
-*.env
-*.log
 
-.coverage
-misc.xml
 error_log.txt

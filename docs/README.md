@@ -1,7 +1,3 @@
-ご提示いただいたドキュメントの日本語翻訳です。
-
------
-
 # 音声ファイル分割ツール（Audio File Splitter）
 
 このツールは、指定したファイルサイズに基づいて、大きな音声ファイルを小さな断片（チャンク）に分割するためのものです。グラフィカルユーザーインターフェース（GUI）を備えており、簡単に操作できます。
@@ -15,9 +11,11 @@
 
 ## 前提条件
 
-  - Python 3.12以上
+  - Python 3.13以上
+  - `requirements.txt` に記載されているPythonライブラリ。`requirements.txt` に記載されているPythonライブラリ。
   - ffmpeg: このアプリケーションは音声処理に `ffmpeg` を使用します。`ffmpeg` がインストールされており、システムのPATH（環境変数）に追加されていることを確認してください。ダウンロードはこちらから可能です： [https://github.com/BtbN/FFmpeg-Builds/releases](https://github.com/BtbN/FFmpeg-Builds/releases)
-  - `requirements.txt` に記載されているPythonライブラリ。
+
+## ffmpegnの設定方法
 
 ## 実行方法
 
