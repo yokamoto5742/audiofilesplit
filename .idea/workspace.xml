@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2451d4d6-9067-400d-a943-a41d97edd5c3" name="変更" comment="✨ chore(version): バージョンを1.0.1に更新&#10;🐛 fix(build): .idea/workspace.xmlの変更をコミット&#10;✨ chore(version): バージョンを1.0.0に更新&#10;✨ chore(deps): 依存関係を追加・更新">
-      <change afterPath="$PROJECT_DIR$/docs/CHANGELOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +111,8 @@
       <workItem from="1765259737997" duration="917000" />
       <workItem from="1765260965856" duration="236000" />
       <workItem from="1765274221619" duration="753000" />
-      <workItem from="1765338819200" duration="427000" />
+      <workItem from="1765338819200" duration="471000" />
+      <workItem from="1765339313189" duration="34000" />
     </task>
     <task id="LOCAL-00001" summary="1st commit">
       <option name="closed" value="true" />
@@ -219,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765274947874</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="✨ chore(version): バージョンを1.0.1に更新&#10;🐛 fix(build): .idea/workspace.xmlの変更をコミット&#10;✨ chore(version): バージョンを1.0.0に更新&#10;✨ chore(deps): 依存関係を追加・更新">
+      <option name="closed" value="true" />
+      <created>1765339265107</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1765339265107</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -254,6 +261,7 @@
     <MESSAGE value="✨ chore(version): バージョンを1.0.0に更新&#10;✨ chore(deps): 依存関係を追加・更新" />
     <MESSAGE value="✨" />
     <MESSAGE value="✨ chore(version): バージョンを1.0.1に更新&#10;" />
+    <MESSAGE value="✨ chore(version): バージョンを1.0.1に更新&#10; fix(build): .idea/workspace.xmlの変更をコミット&#10;✨ chore(version): バージョンを1.0.0に更新&#10;✨ chore(deps): 依存関係を追加・更新" />
     <MESSAGE value="✨ chore(version): バージョンを1.0.1に更新&#10; fix(build): .idea/workspace.xmlの変更をコミット&#10;✨ chore(version): バージョンを1.0.0に更新&#10;✨ chore(deps): 依存関係を追加・更新" />
     <option name="LAST_COMMIT_MESSAGE" value="✨ chore(version): バージョンを1.0.1に更新&#10; fix(build): .idea/workspace.xmlの変更をコミット&#10;✨ chore(version): バージョンを1.0.0に更新&#10;✨ chore(deps): 依存関係を追加・更新" />
   </component>

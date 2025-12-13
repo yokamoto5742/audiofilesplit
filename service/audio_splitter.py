@@ -25,7 +25,7 @@ def _export_chunk(chunk: AudioSegment, output_path: str, output_format: str) -> 
     elif format_lower == "mp4":
         chunk.export(output_path, format="mp4", codec="aac")
     elif format_lower == "mp3":
-        chunk.export(output_path, format="mp3")
+        chunk.export(output_path)
     else:
         chunk.export(output_path, format=output_format)
 
