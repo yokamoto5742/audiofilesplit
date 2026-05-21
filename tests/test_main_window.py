@@ -405,8 +405,8 @@ class TestProcessSplitAudio:
 
         window._select_file.assert_called_once()
 
-    @patch('app.main_window.tk.Label')
-    @patch('app.main_window.tk.Toplevel')
+    @patch('app.progress_window.tk.Label')
+    @patch('app.progress_window.tk.Toplevel')
     @patch('app.main_window.threading.Thread', ImmediateThread)
     @patch('app.main_window.tk.Button')
     @patch('app.main_window.load_config')
@@ -447,8 +447,8 @@ class TestProcessSplitAudio:
         mock_showinfo.assert_called_once()  # 完了のみ
         window._open_output_directory.assert_called_once_with('C:\\Output')
 
-    @patch('app.main_window.tk.Label')
-    @patch('app.main_window.tk.Toplevel')
+    @patch('app.progress_window.tk.Label')
+    @patch('app.progress_window.tk.Toplevel')
     @patch('app.main_window.threading.Thread', ImmediateThread)
     @patch('app.main_window.tk.Button')
     @patch('app.main_window.load_config')
@@ -481,8 +481,8 @@ class TestProcessSplitAudio:
 
         mock_makedirs.assert_called_once_with('C:\\Output', exist_ok=True)
 
-    @patch('app.main_window.tk.Label')
-    @patch('app.main_window.tk.Toplevel')
+    @patch('app.progress_window.tk.Label')
+    @patch('app.progress_window.tk.Toplevel')
     @patch('app.main_window.threading.Thread', ImmediateThread)
     @patch('app.main_window.tk.Button')
     @patch('app.main_window.load_config')
@@ -569,8 +569,8 @@ class TestSplitErrorHandling:
         mock_showerror.assert_called_once()
         assert "変換中にエラーが発生しました" in mock_showerror.call_args[0][1]
 
-    @patch('app.main_window.tk.Label')
-    @patch('app.main_window.tk.Toplevel')
+    @patch('app.progress_window.tk.Label')
+    @patch('app.progress_window.tk.Toplevel')
     @patch('app.main_window.tk.Button')
     @patch('app.main_window.load_config')
     @patch('app.main_window.split_audio_file')

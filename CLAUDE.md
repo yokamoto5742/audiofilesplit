@@ -50,8 +50,3 @@ Use emoji + conventional commits:
 🗑️ chore(scope): description
 📝 docs(scope): description
 ```
-
-## Known Issues
-
-- `build.py` line 15 references undefined `new_version` — do not run it
-- `utils/log_rotation.py` exists but is not imported anywhere

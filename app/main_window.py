@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 from app import __version__
+from app.progress_window import ProgressWindow
 from service.audio_splitter import split_audio_file
 from utils.config_manager import CONFIG_PATH, load_config
 
@@ -23,8 +24,7 @@ class AudiofilesplitMainWindow:
         self.root.geometry(f"{window_width}x{window_height}")
         self.root.resizable(False, False)
 
-        self.progress_window = None
-        self.progress_label = None
+        self.progress_window: ProgressWindow | None = None
         self._progress_queue: queue.Queue = queue.Queue()
 
         button_font = ("Yu Gothic UI", font_size)
@@ -136,26 +136,13 @@ class AudiofilesplitMainWindow:
 
     def _show_progress_window(self):
         """進捗表示ウィンドウを作成"""
-        self.progress_window = tk.Toplevel(self.root)
-        self.progress_window.title("処理中")
-        self.progress_window.geometry("360x100")
-        self.progress_window.resizable(False, False)
-        self.progress_window.transient(self.root)
-
-        self.progress_label = tk.Label(
-            self.progress_window,
-            text="音声ファイルの分割を開始します",
-            font=("Yu Gothic UI", 9),
-            wraplength=340
-        )
-        self.progress_label.pack(expand=True, padx=10, pady=10)
+        self.progress_window = ProgressWindow(self.root)
 
     def _close_progress_window(self):
         """進捗表示ウィンドウを閉じる"""
         if self.progress_window is not None:
-            self.progress_window.destroy()
+            self.progress_window.close()
             self.progress_window = None
-            self.progress_label = None
 
     def _run_split(self, file_path, output_dir, target_size_mb, output_format):
         """別スレッドで分割処理を実行。結果はキュー経由でメインスレッドへ通知する"""
@@ -181,8 +168,8 @@ class AudiofilesplitMainWindow:
             while True:
                 kind, data = self._progress_queue.get_nowait()
                 if kind == 'progress':
-                    if self.progress_label is not None:
-                        self.progress_label.config(text=data)
+                    if self.progress_window is not None:
+                        self.progress_window.update_message(data)
                 elif kind == 'complete':
                     self._on_split_complete(data)
                     return

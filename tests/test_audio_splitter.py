@@ -113,7 +113,7 @@ class TestCanStreamCopy:
 class TestSplitOneChunk:
     """_split_one_chunk関数のテスト"""
 
-    @patch("service.audio_splitter._run_command")
+    @patch("service.ffmpeg_runner._run_command")
     def test_stream_copy_uses_copy_codec(self, mock_run):
         """ストリームコピー時は -c copy を使う"""
         _split_one_chunk("in.m4a", "out.m4a", 0.0, 10.0, "m4a", True)
@@ -121,7 +121,7 @@ class TestSplitOneChunk:
         assert "-c" in cmd
         assert "copy" in cmd
 
-    @patch("service.audio_splitter._run_command")
+    @patch("service.ffmpeg_runner._run_command")
     def test_reencode_m4a_uses_aac(self, mock_run):
         """m4a再エンコード時は aac エンコーダを使う"""
         _split_one_chunk("in.wav", "out.m4a", 0.0, 10.0, "m4a", False)
@@ -129,14 +129,14 @@ class TestSplitOneChunk:
         assert "-c:a" in cmd
         assert cmd[cmd.index("-c:a") + 1] == "aac"
 
-    @patch("service.audio_splitter._run_command")
+    @patch("service.ffmpeg_runner._run_command")
     def test_reencode_mp3_uses_libmp3lame(self, mock_run):
         """mp3再エンコード時は libmp3lame エンコーダを使う"""
         _split_one_chunk("in.wav", "out.mp3", 0.0, 10.0, "mp3", False)
         cmd = mock_run.call_args[0][0]
         assert cmd[cmd.index("-c:a") + 1] == "libmp3lame"
 
-    @patch("service.audio_splitter._run_command")
+    @patch("service.ffmpeg_runner._run_command")
     def test_seek_before_input(self, mock_run):
         """高速シークのため -ss は -i より前に置く"""
         _split_one_chunk("in.m4a", "out.m4a", 5.0, 10.0, "m4a", True)
@@ -147,14 +147,14 @@ class TestSplitOneChunk:
 class TestRunCommand:
     """_run_command関数のテスト"""
 
-    @patch("service.audio_splitter.subprocess.run", side_effect=FileNotFoundError)
+    @patch("service.ffmpeg_runner.subprocess.run", side_effect=FileNotFoundError)
     def test_binary_not_found(self, mock_run):
         """ffmpeg実行ファイルが見つからない場合"""
         with pytest.raises(RuntimeError) as exc_info:
             _run_command(["ffmpeg", "-version"])
         assert "見つかりません" in str(exc_info.value)
 
-    @patch("service.audio_splitter.subprocess.run")
+    @patch("service.ffmpeg_runner.subprocess.run")
     def test_command_failure(self, mock_run):
         """コマンドが異常終了した場合"""
         mock_run.side_effect = subprocess.CalledProcessError(1, "ffmpeg", stderr="error detail")
@@ -166,7 +166,7 @@ class TestRunCommand:
 class TestProbeAudio:
     """_probe_audio関数のテスト"""
 
-    @patch("service.audio_splitter._run_command")
+    @patch("service.ffmpeg_runner._run_command")
     def test_probe_success(self, mock_run):
         """再生時間とコーデック名を取得できる"""
         mock_run.return_value.stdout = "codec_name=aac\nduration=123.45\n"
@@ -174,7 +174,7 @@ class TestProbeAudio:
         assert duration == 123.45
         assert codec == "aac"
 
-    @patch("service.audio_splitter._run_command")
+    @patch("service.ffmpeg_runner._run_command")
     def test_probe_invalid_duration(self, mock_run):
         """再生時間が取得できない場合はエラー"""
         mock_run.return_value.stdout = "codec_name=aac\nduration=N/A\n"
