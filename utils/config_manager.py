@@ -31,6 +31,18 @@ def load_config() -> configparser.ConfigParser:
     return config
 
 
+def get_config_value(
+    config: configparser.ConfigParser,
+    section: str,
+    key: str,
+    default: str | int | bool | None = None,
+) -> str | int | bool | None:
+    try:
+        return config.get(section, key)
+    except (configparser.NoSectionError, configparser.NoOptionError):
+        return default
+
+
 def save_config(config: configparser.ConfigParser):
     try:
         with open(CONFIG_PATH, 'w', encoding='utf-8') as configfile:
