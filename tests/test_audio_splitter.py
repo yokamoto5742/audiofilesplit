@@ -6,12 +6,14 @@ import pytest
 
 from service.audio_splitter import (
     _calculate_chunks,
-    _can_stream_copy,
     _get_output_filename,
+    split_audio_file,
+)
+from service.ffmpeg_runner import (
+    _can_stream_copy,
     _probe_audio,
     _run_command,
     _split_one_chunk,
-    split_audio_file,
 )
 
 
