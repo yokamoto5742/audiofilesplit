@@ -2,9 +2,7 @@ build/
 dist/
 logs/
 .idea/
-.serena/
 
-.idea/workspace.xml
 .env
 .coverage
 *.spec
