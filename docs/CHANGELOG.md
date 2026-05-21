@@ -32,7 +32,3 @@
 ### 依存関係
 - pydub を依存関係に追加
 - audioop-lts を依存関係に追加
-
-[未リリース]: https://github.com/yokamoto5742/audiofilesplit/compare/v1.0.1...main
-[1.0.1]: https://github.com/yokamoto5742/audiofilesplit/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/yokamoto5742/audiofilesplit/releases/tag/v1.0.0

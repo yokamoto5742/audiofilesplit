@@ -1,5 +1,7 @@
 import os
+import queue
 import subprocess
+import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox
 
@@ -21,19 +23,23 @@ class AudiofilesplitMainWindow:
         self.root.geometry(f"{window_width}x{window_height}")
         self.root.resizable(False, False)
 
+        self.progress_window = None
+        self.progress_label = None
+        self._progress_queue: queue.Queue = queue.Queue()
+
         button_font = ("Yu Gothic UI", font_size)
         button_width = 15
         button_padx = 10
         button_pady = 10
 
-        btn_split_audio = tk.Button(
+        self.btn_split_audio = tk.Button(
             self.root,
             text="音声ファイル分割",
             font=button_font,
             width=button_width,
             command=self.split_audio_handler
         )
-        btn_split_audio.pack(pady=button_pady, padx=button_padx)
+        self.btn_split_audio.pack(pady=button_pady, padx=button_padx)
 
         btn_open_config = tk.Button(
             self.root,
@@ -91,7 +97,7 @@ class AudiofilesplitMainWindow:
         self._handle_errors(self._process_split_audio)
 
     def _process_split_audio(self):
-        """音声ファイル分割処理"""
+        """音声ファイル分割処理(別スレッドで実行)"""
         config = load_config()
         downloads_path = config.get('Paths', 'downloads_path')
         output_path = config.get('Paths', 'output_path')
@@ -100,7 +106,7 @@ class AudiofilesplitMainWindow:
 
         # ファイル選択
         filetypes = [
-            ("すべての音声ファイル", "*.mp3 *.m4a *.wav *.flac *.aac *.ogg *.wma *.mp4"),
+            ("すべての音声ファイル", "*.mp3 *.m4a *.wav *.mp4"),
             ("MP3ファイル", "*.mp3"),
             ("M4Aファイル", "*.m4a"),
             ("WAVファイル", "*.wav"),
@@ -115,19 +121,90 @@ class AudiofilesplitMainWindow:
         if not os.path.exists(output_path):
             os.makedirs(output_path, exist_ok=True)
 
-        # 処理開始メッセージ
-        messagebox.showinfo("開始", "音声ファイルの分割を開始します")
+        self._progress_queue = queue.Queue()
+        self._show_progress_window()
+        self.btn_split_audio.config(state=tk.DISABLED)
 
-        # 分割処理実行
-        split_audio_file(
-            file_path=file_path,
-            output_dir=output_path,
-            target_chunk_size_mb=target_size_mb,
-            output_format=output_file_format
+        # 分割処理はGUIをブロックしないよう別スレッドで実行
+        thread = threading.Thread(
+            target=self._run_split,
+            args=(file_path, output_path, target_size_mb, output_file_format),
+            daemon=True
         )
+        thread.start()
+        self._poll_progress_queue()
 
-        # 完了メッセージ
+    def _show_progress_window(self):
+        """進捗表示ウィンドウを作成"""
+        self.progress_window = tk.Toplevel(self.root)
+        self.progress_window.title("処理中")
+        self.progress_window.geometry("360x100")
+        self.progress_window.resizable(False, False)
+        self.progress_window.transient(self.root)
+
+        self.progress_label = tk.Label(
+            self.progress_window,
+            text="音声ファイルの分割を開始します",
+            font=("Yu Gothic UI", 9),
+            wraplength=340
+        )
+        self.progress_label.pack(expand=True, padx=10, pady=10)
+
+    def _close_progress_window(self):
+        """進捗表示ウィンドウを閉じる"""
+        if self.progress_window is not None:
+            self.progress_window.destroy()
+            self.progress_window = None
+            self.progress_label = None
+
+    def _run_split(self, file_path, output_dir, target_size_mb, output_format):
+        """別スレッドで分割処理を実行。結果はキュー経由でメインスレッドへ通知する"""
+        try:
+            split_audio_file(
+                file_path=file_path,
+                output_dir=output_dir,
+                target_chunk_size_mb=target_size_mb,
+                output_format=output_format,
+                progress_callback=self._on_progress
+            )
+            self._progress_queue.put(('complete', output_dir))
+        except Exception as e:
+            self._progress_queue.put(('error', e))
+
+    def _on_progress(self, message):
+        """進捗コールバック。root.after を使わずキューに積むだけにする(スレッドセーフ)"""
+        self._progress_queue.put(('progress', message))
+
+    def _poll_progress_queue(self):
+        """メインスレッドでキューをポーリングし進捗・完了・エラーを処理する"""
+        try:
+            while True:
+                kind, data = self._progress_queue.get_nowait()
+                if kind == 'progress':
+                    if self.progress_label is not None:
+                        self.progress_label.config(text=data)
+                elif kind == 'complete':
+                    self._on_split_complete(data)
+                    return
+                elif kind == 'error':
+                    self._on_split_error(data)
+                    return
+        except queue.Empty:
+            pass
+        self.root.after(50, self._poll_progress_queue)
+
+    def _on_split_complete(self, output_dir):
+        """分割完了時の処理"""
+        self._close_progress_window()
+        self.btn_split_audio.config(state=tk.NORMAL)
         messagebox.showinfo("完了", "音声ファイルの分割が完了しました")
+        self._open_output_directory(output_dir)
 
-        # 出力フォルダを開く
-        self._open_output_directory(output_path)
+    def _on_split_error(self, error):
+        """分割エラー時の処理"""
+        self._close_progress_window()
+        self.btn_split_audio.config(state=tk.NORMAL)
+        if isinstance(error, FileNotFoundError):
+            messagebox.showerror("エラー", f"ファイルが見つかりません:\n{str(error)}")
+        else:
+            messagebox.showerror("エラー", f"変換中にエラーが発生しました:\n{str(error)}")

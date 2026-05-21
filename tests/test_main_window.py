@@ -1,11 +1,21 @@
-import os
-import subprocess
 import tkinter as tk
-from unittest.mock import MagicMock, Mock, call, patch
+from unittest.mock import Mock, patch
 
 import pytest
 
 from app.main_window import AudiofilesplitMainWindow
+
+
+class ImmediateThread:
+    """テスト用: start()で即座に同期実行するThreadの代替"""
+
+    def __init__(self, target=None, args=(), daemon=None):
+        self._target = target
+        self._args = args
+
+    def start(self):
+        if self._target is not None:
+            self._target(*self._args)
 
 
 @pytest.fixture
@@ -16,6 +26,8 @@ def mock_root():
     root.geometry = Mock()
     root.resizable = Mock()
     root.quit = Mock()
+    # after() はメインスレッドへの委譲をシミュレートし同期実行する
+    root.after = Mock(side_effect=lambda delay, func, *args: func(*args))
     return root
 
 
@@ -46,7 +58,7 @@ class TestAudiofilesplitMainWindowInit:
         """ウィンドウの初期設定"""
         mock_load_config.return_value = mock_config
 
-        window = AudiofilesplitMainWindow(mock_root)
+        AudiofilesplitMainWindow(mock_root)
 
         mock_root.title.assert_called_once()
         assert "音声ファイル分割" in mock_root.title.call_args[0][0]
@@ -67,7 +79,7 @@ class TestAudiofilesplitMainWindowInit:
         mock_button_instance = Mock()
         mock_button.return_value = mock_button_instance
 
-        window = AudiofilesplitMainWindow(mock_root)
+        AudiofilesplitMainWindow(mock_root)
 
         assert mock_button.call_count == 3
         assert mock_button_instance.pack.call_count == 3
@@ -80,7 +92,7 @@ class TestAudiofilesplitMainWindowInit:
         mock_button_instance = Mock()
         mock_button.return_value = mock_button_instance
 
-        window = AudiofilesplitMainWindow(mock_root)
+        AudiofilesplitMainWindow(mock_root)
 
         button_texts = [call_args[1]['text'] for call_args in mock_button.call_args_list]
         assert "音声ファイル分割" in button_texts
@@ -393,6 +405,9 @@ class TestProcessSplitAudio:
 
         window._select_file.assert_called_once()
 
+    @patch('app.main_window.tk.Label')
+    @patch('app.main_window.tk.Toplevel')
+    @patch('app.main_window.threading.Thread', ImmediateThread)
     @patch('app.main_window.tk.Button')
     @patch('app.main_window.load_config')
     @patch('app.main_window.split_audio_file')
@@ -407,6 +422,8 @@ class TestProcessSplitAudio:
         mock_split_audio_file,
         mock_load_config,
         mock_button,
+        mock_toplevel,
+        mock_label,
         mock_root,
         mock_config
     ):
@@ -421,15 +438,18 @@ class TestProcessSplitAudio:
         window._process_split_audio()
 
         window._select_file.assert_called_once()
-        mock_split_audio_file.assert_called_once_with(
-            file_path="C:\\test\\audio.mp3",
-            output_dir='C:\\Output',
-            target_chunk_size_mb=24,
-            output_format='m4a'
-        )
-        assert mock_showinfo.call_count == 2  # 開始と完了
+        mock_split_audio_file.assert_called_once()
+        call_kwargs = mock_split_audio_file.call_args[1]
+        assert call_kwargs['file_path'] == "C:\\test\\audio.mp3"
+        assert call_kwargs['output_dir'] == 'C:\\Output'
+        assert call_kwargs['target_chunk_size_mb'] == 24
+        assert call_kwargs['output_format'] == 'm4a'
+        mock_showinfo.assert_called_once()  # 完了のみ
         window._open_output_directory.assert_called_once_with('C:\\Output')
 
+    @patch('app.main_window.tk.Label')
+    @patch('app.main_window.tk.Toplevel')
+    @patch('app.main_window.threading.Thread', ImmediateThread)
     @patch('app.main_window.tk.Button')
     @patch('app.main_window.load_config')
     @patch('app.main_window.split_audio_file')
@@ -444,6 +464,8 @@ class TestProcessSplitAudio:
         mock_split_audio_file,
         mock_load_config,
         mock_button,
+        mock_toplevel,
+        mock_label,
         mock_root,
         mock_config
     ):
@@ -459,12 +481,17 @@ class TestProcessSplitAudio:
 
         mock_makedirs.assert_called_once_with('C:\\Output', exist_ok=True)
 
+    @patch('app.main_window.tk.Label')
+    @patch('app.main_window.tk.Toplevel')
+    @patch('app.main_window.threading.Thread', ImmediateThread)
     @patch('app.main_window.tk.Button')
     @patch('app.main_window.load_config')
     def test_process_split_audio_with_different_formats(
         self,
         mock_load_config,
         mock_button,
+        mock_toplevel,
+        mock_label,
         mock_root
     ):
         """異なる出力フォーマットのテスト"""
@@ -497,3 +524,75 @@ class TestProcessSplitAudio:
                     call_kwargs = mock_split.call_args[1]
                     assert call_kwargs['output_format'] == 'mp3'
                     assert call_kwargs['target_chunk_size_mb'] == 30
+
+
+class TestSplitErrorHandling:
+    """分割処理のエラーハンドリングのテスト"""
+
+    @patch('app.main_window.tk.Button')
+    @patch('app.main_window.load_config')
+    @patch('app.main_window.messagebox.showerror')
+    def test_on_split_error_file_not_found(
+        self,
+        mock_showerror,
+        mock_load_config,
+        mock_button,
+        mock_root,
+        mock_config
+    ):
+        """FileNotFoundError発生時のエラー表示"""
+        mock_load_config.return_value = mock_config
+
+        window = AudiofilesplitMainWindow(mock_root)
+        window._on_split_error(FileNotFoundError("test.mp3"))
+
+        mock_showerror.assert_called_once()
+        assert "ファイルが見つかりません" in mock_showerror.call_args[0][1]
+
+    @patch('app.main_window.tk.Button')
+    @patch('app.main_window.load_config')
+    @patch('app.main_window.messagebox.showerror')
+    def test_on_split_error_general_exception(
+        self,
+        mock_showerror,
+        mock_load_config,
+        mock_button,
+        mock_root,
+        mock_config
+    ):
+        """一般的な例外発生時のエラー表示"""
+        mock_load_config.return_value = mock_config
+
+        window = AudiofilesplitMainWindow(mock_root)
+        window._on_split_error(RuntimeError("ffmpeg error"))
+
+        mock_showerror.assert_called_once()
+        assert "変換中にエラーが発生しました" in mock_showerror.call_args[0][1]
+
+    @patch('app.main_window.tk.Label')
+    @patch('app.main_window.tk.Toplevel')
+    @patch('app.main_window.tk.Button')
+    @patch('app.main_window.load_config')
+    @patch('app.main_window.split_audio_file')
+    @patch('app.main_window.messagebox.showerror')
+    def test_run_split_catches_exception(
+        self,
+        mock_showerror,
+        mock_split_audio_file,
+        mock_load_config,
+        mock_button,
+        mock_toplevel,
+        mock_label,
+        mock_root,
+        mock_config
+    ):
+        """_run_split内の例外がエラー表示につながる"""
+        mock_load_config.return_value = mock_config
+        mock_split_audio_file.side_effect = RuntimeError("ffmpeg error")
+
+        window = AudiofilesplitMainWindow(mock_root)
+        window._show_progress_window()
+        window._run_split("test.mp3", "C:\\Output", 24, "m4a")
+        window._poll_progress_queue()
+
+        mock_showerror.assert_called_once()
