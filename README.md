@@ -6,14 +6,12 @@
 
 - 音声ファイルの自動分割（目標ファイルサイズ指定）
 - 複数の出力形式をサポート（m4a、mp3、mp4）
-- Tkinterベースのシンプルなグラフィカルユーザーインターフェース
-- 設定ファイル（config.ini）による外観・パス・分割設定の管理
 - 分割処理の詳細なログ出力
 
 ## 前提条件
 
 ### 必須
-- **Python 3.12 以上**
+- **Python 3.13 以上**
 - **ffmpeg**: システムのPATHに追加されていることが必要
 
 ### ffmpegのインストール（Windows）
@@ -36,70 +34,38 @@ git clone https://github.com/yokamoto5742/audiofilesplit.git
 cd audiofilesplit
 ```
 
-### 2. 仮想環境の作成（推奨）
+### 2. 仮想環境の作成と依存パッケージのインストール
+
+事前に [uv](https://docs.astral.sh/uv/getting-started/installation/) のインストールが必要です。
+
 ```bash
-python -m venv .venv
-.venv\Scripts\activate  # Windows
-# または
-source .venv/bin/activate  # macOS/Linux
+# 仮想環境の作成とパッケージのインストールを一度に行う
+uv sync
 ```
 
-### 3. 依存関係のインストール
-```bash
-pip install -r requirements.txt
-```
+仮想環境を有効化する：
 
-### 4. ffmpegのインストール確認
 ```bash
-ffmpeg -version
+# Windows (Command Prompt)
+.venv\Scripts\activate.bat
+
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+
+# Mac / Linux
+source .venv/bin/activate
 ```
 
 ## 使用方法
 
-### GUI版（推奨）
 ```bash
-python -m app.main_window
+python main.py
 ```
 
 GUIウィンドウが起動します。以下の操作が可能です：
 
 - **音声ファイル分割**: ファイル選択ダイアログから音声ファイルを選択し、分割処理を実行
 - **設定ファイル**: `config.ini` をメモ帳で開いて分割設定やパスを変更
-
-### CLI版
-```bash
-python main.py
-```
-
-## プロジェクト構造
-
-```
-audiofilesplit/
-├── app/                          # GUI アプリケーション
-│   ├── __init__.py              # バージョン情報 (__version__, __date__)
-│   └── main_window.py           # メインウィンドウクラス
-├── service/                      # ビジネスロジック
-│   ├── __init__.py
-│   └── audio_splitter.py        # 音声分割の中核ロジック
-├── utils/                        # ユーティリティ
-│   ├── __init__.py
-│   ├── config_manager.py        # 設定ファイルの読み込み/保存
-│   └── config.ini               # 設定ファイル
-├── scripts/                      # 開発用スクリプト
-│   ├── __init__.py
-│   ├── version_manager.py       # バージョン管理
-│   └── project_structure.py     # プロジェクト構造生成
-├── tests/                        # テストスイート
-│   ├── __init__.py
-│   ├── test_main_window.py      # GUItests
-│   └── test_audio_splitter.py   # 音声分割テスト
-├── main.py                       # メインエントリーポイント
-├── build.py                      # PyInstallerビルドスクリプト
-├── requirements.txt              # Python依存関係
-└── docs/
-    ├── README.md                # このファイル
-    └── CHANGELOG.md             # 変更履歴
-```
 
 ## 主要コンポーネント
 
